@@ -2,13 +2,19 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-def obtener_datos_equipo_csv(file_path):
+def obtener_datos_equipo_csv(file_path, equipo):
     try:
+        # Utiliza pd.read_csv para leer el archivo CSV
         df_partidos = pd.read_csv(file_path)
+        
+        # Filtra los datos para incluir solo el equipo proporcionado por el usuario
+        df_partidos = df_partidos[df_partidos['Equipo'] == equipo]
+        
         return df_partidos
     except FileNotFoundError:
         print(f'No se encontró el archivo CSV: {file_path}.')
         return None
+
 
 def obtener_jugador_mas_ganador(datos_equipo):
     if 'Partidos Ganados' in datos_equipo.columns:
@@ -48,7 +54,8 @@ nombre_equipo_usuario = input("Ingrese el nombre del equipo de la liga: ").strip
 nombre_archivo_csv = f'{nombre_equipo_usuario.lower()}_datos_equipo.csv'
 
 # Obtener datos del equipo desde el archivo CSV
-datos_equipo = obtener_datos_equipo_csv('jugadores.csv')
+datos_equipo = obtener_datos_equipo_csv('jugadores.csv', nombre_equipo_usuario)
+
 
 if datos_equipo is not None:
     # Obtener el jugador con más partidos ganados
@@ -79,5 +86,6 @@ if datos_equipo is not None:
         print(f'No se pudo determinar el jugador más ganador para {nombre_equipo_usuario.capitalize()}.')
 else:
     print(f'No se encontró el archivo CSV: jugadores.csv.')
+
 
 
