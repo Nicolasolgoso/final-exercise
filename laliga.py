@@ -33,7 +33,13 @@ def calcular_promedio(datos_equipo, jugador):
         datos_jugador[['Goles', 'Asistencias', 'Amarillas', 'Rojas']] = datos_jugador[['Goles', 'Asistencias', 'Amarillas', 'Rojas']].apply(pd.to_numeric, errors='coerce')
 
         promedio_goles = np.nanmean(datos_jugador['Goles'])
-        promedio_asistencias = np.nanmean(datos_jugador['Asistencias'])
+        
+        # Verifica si hay al menos un valor no nulo antes de calcular la media de 'Asistencias'
+        if not datos_jugador['Asistencias'].isnull().all():
+            promedio_asistencias = np.nanmean(datos_jugador['Asistencias'])
+        else:
+            promedio_asistencias = np.nan  # Otra opción es asignar un valor específico en caso de que todos los valores sean nulos
+
         promedio_amarillas = np.nanmean(datos_jugador['Amarillas'])
         
         # Verifica si hay al menos un valor no nulo antes de calcular la media de 'Rojas'
@@ -41,6 +47,7 @@ def calcular_promedio(datos_equipo, jugador):
             promedio_rojas = np.nanmean(datos_jugador['Rojas'])
         else:
             promedio_rojas = np.nan  # Otra opción es asignar un valor específico en caso de que todos los valores sean nulos
+
         return promedio_goles, promedio_asistencias, promedio_amarillas, promedio_rojas
     else:
         print('Columnas necesarias no encontradas para calcular el promedio.')
@@ -68,10 +75,10 @@ if datos_equipo is not None:
         promedio_goles, promedio_asistencias, promedio_amarillas, promedio_rojas = calcular_promedio(datos_equipo, jugador)
 
         if promedio_goles is not None:
-            print(f'Promedio de Goles: {promedio_goles}')
-            print(f'Promedio de Asistencias: {promedio_asistencias}')
-            print(f'Promedio de Amarillas: {promedio_amarillas}')
-            print(f'Promedio de Rojas: {promedio_rojas}')
+            print(f'Total de Goles: {promedio_goles}')
+            print(f'Total de Asistencias: {promedio_asistencias}')
+            print(f'Total de Amarillas: {promedio_amarillas}')
+            print(f'Total de Rojas: {promedio_rojas}')
 
             # Ejemplo de visualización con matplotlib
             plt.bar(datos_equipo['Jugador'], datos_equipo['Partidos Ganados'])
